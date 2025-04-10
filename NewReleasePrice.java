@@ -1,3 +1,4 @@
+// Class to calculate and return the rental fee for a new release movie.
 public class NewReleasePrice extends Price {
     @Override
     public double getCharge(int daysRented) {
