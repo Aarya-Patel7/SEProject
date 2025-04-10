@@ -1,0 +1,22 @@
+Explanation of Refactored Code for Movie Rental
+A) Method Extraction
+1.	Calc rental price  Extracting this method from the switch statement in the statement method from the original program helps remove the code smell, being the switch statement, from the program, thus improving readability of the program as the method is not as large.
+2.	Calc frequenter points  Extracting this method from the statement method of the original program helps reduce the responsibilities of method and improves readability as the method is not as large (removes a code smell).
+3.	Output formatting  Extracting this method from the statement method of the original program improves readability as the method is not as large (removes a code smell) and the output can be formatted in a formal structure.
+B) New Classes
+1.	Price.java  Price is a super class to RegularPrice, NewReleasePrice, and ChildrenPrice, which provides the method structure for calculating and returning the rental fee per movie and the amount of renter points given per movie.
+2.	RegularPrice.java  RegularPrice is a sub class to Price and is used to calculate and return the rental fee for a regular movie.
+3.	NewRealeasePrice.java  NewReleasePrice is a sub class to Price and is used to calculate and return the rental fee for a new release movie.
+4.	ChildrenPrice.java   RegularPrice is a sub class to Price and is used to calculate and return the rental fee for a children’s movie.
+Creating the following classes helps in the refactoring process by making Customer more readable as it has less responsibilities to perform as a class, improving code organization, and improving the maintainability of program by removing code smells such as large methods and classes.
+C) Method Move
+1.	Calc rental price (From Customer to Rental)  Calculating the rental price should be the role of the Rental class not the Customer class, thus the method is moved to the Rental class.
+2.	Calc frequenter points (from Customer to Rental)  Calculating the frequenter renter points should be the role of the Rental class not the Customer class, thus the method is moved to the Rental class.
+3.	Get rental price (from Movie to Price classes)
+D) Renaming Operations
+1.	Statement() to generateTextStatement() and generateXmlStatement()  This change provides a more understandable output method which improves the readability of the program.
+2.	totalAmount to totalRentalFees
+3.	thisAmount to RentalFee
+4.	String result to String customerRentalStatement
+E) Replacement of Data Types
+1.	int PriceCode to Price priceCode  PriceCode should not be an int as it stores the rental fee of a movie which can be a floating-point number (double). Instead, a Price class with sub classes was created to expand the scope of the movie price code.
