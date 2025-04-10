@@ -1,3 +1,14 @@
+/**
+ * Author(s): 
+ * This program is a refactored version of the original movie-rental program in which
+ * the following changes were made:
+ * At least 3 method extraction operations
+ * At least 3 new classes
+ * At least 3 moving method operations
+ * At least 3 renaming operations
+ * 1-2 replacements of data types.
+ * The main method provides a means to test the program.
+ */
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -57,5 +68,20 @@ public class Customer {
 
         xml.append("</customer>");
         return xml.toString();
+    }
+
+    // main method to test program
+    public static void main(String[] args) {
+        Customer customer = new Customer("John Smith");
+
+        customer.addRental(new Rental(new Movie("Independence Day", new NewReleasePrice()), 5));
+        customer.addRental(new Rental(new Movie("Finding Nemo", new ChildrenPrice()), 4));
+        customer.addRental(new Rental(new Movie("The Godfather", new RegularPrice()), 3));
+
+        System.out.println("=== Text Statement ===");
+        System.out.println(customer.generateTextStatement());
+
+        System.out.println("\n=== XML Statement ===");
+        System.out.println(customer.generateXmlStatement());
     }
 }
