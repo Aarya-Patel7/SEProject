@@ -14,9 +14,10 @@ C) Method Move
 2.	Calc frequenter points (from Customer to Rental)  Calculating the frequenter renter points should be the role of the Rental class not the Customer class, thus the method is moved to the Rental class.
 3.	Get rental price (from Movie to Price classes)
 D) Renaming Operations
-1.	Statement() to generateTextStatement() and generateXmlStatement()  This change provides a more understandable output method which improves the readability of the program.
-2.	totalAmount to totalRentalFees
-3.	thisAmount to RentalFee
-4.	String result to String customerRentalStatement
+1.  provides a more understandable output method which improves the readability of the program.
+2.	totalAmount to totalRentalFees  This change provides a more understandable variable name which improves the readability of the program. “totalAmount” is too ambiguous to what it could mean, but totalRentalFees directly states what the variable is for, being the total fee for all movie rentals.
+3.	thisAmount to rentalFee  This change provides a more understandable variable name which improves the readability of the program. “thisAmount” is too ambiguous to what it could mean, but rentalFee directly states what the variable is for, being the rental fee of the movie.
+4.	String result to String customerRentalStatement  This change provides a more understandable variable name which improves the readability of the program. “result” is too ambiguous to what it could mean, but customerRentalStatement directly states what the variable is for, being the output statement.
+
 E) Replacement of Data Types
 1.	int PriceCode to Price priceCode  PriceCode should not be an int as it stores the rental fee of a movie which can be a floating-point number (double). Instead, a Price class with sub classes was created to expand the scope of the movie price code.
