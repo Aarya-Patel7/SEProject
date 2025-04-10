@@ -28,6 +28,10 @@ public class Customer {
         return name;
     }
 
+    /* Generates regular print statement stating Customer name, movie, rental price for
+     * the movie, total rental fee of all movies, and number of frequent renter points
+     * of the customer.
+     */
     public String generateTextStatement() {
         StringBuilder customerRentalStatement = new StringBuilder("Rental Record for " + getName() + "\n");
 
@@ -52,6 +56,9 @@ public class Customer {
         return customerRentalStatement.toString();
     }
 
+    /* Generates a statement of Customer name, movie, and rental price for
+     * the movie in xml format.
+     */
     public String generateXmlStatement() {
         StringBuilder xml = new StringBuilder();
         xml.append("<customer>\n");
