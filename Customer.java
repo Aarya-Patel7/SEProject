@@ -16,6 +16,8 @@ import java.util.Vector;
 public class Customer {
     private String name;
     private Vector<Rental> rentals = new Vector<Rental>();
+    private double totalRentalFees = 0;
+    private int frequentRenterPoints = 0;
 
     public Customer(String name) {
         this.name = name;
@@ -35,9 +37,6 @@ public class Customer {
      */
     public String generateTextStatement() {
         StringBuilder customerRentalStatement = new StringBuilder("Rental Record for " + getName() + "\n");
-
-        double totalRentalFees = 0;
-        int frequentRenterPoints = 0;
 
         Enumeration<Rental> rentalEnum = rentals.elements();
         while (rentalEnum.hasMoreElements()) {
@@ -74,6 +73,8 @@ public class Customer {
             xml.append("  </rental>\n");
         }
 
+        xml.append("  <total fees>").append(totalRentalFees).append("</total fees>\n");
+        xml.append("  <frequenter renter points>").append(frequentRenterPoints).append("</frequenter renter points>\n");
         xml.append("</customer>");
         return xml.toString();
     }
