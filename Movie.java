@@ -1,21 +1,23 @@
-public class Movie {
+// Parent class Movie
+// Contains Movie specific info and stratergy for calculating charge and frequent renter points
+public abstract class Movie {
     private String title;
-    private Price priceCode;
 
-    public Movie(String title, Price priceCode) {
+    public Movie (String title) {
         this.title = title;
-        this.priceCode = priceCode;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
-    public double getCharge(int daysRented) {
-        return priceCode.getCharge(daysRented);
+    public void setTitle(String title) {
+        this.title = title;
     }
+
+    public abstract double getCharge(int daysRented);
 
     public int getFrequentRenterPoints(int daysRented) {
-        return priceCode.getFrequentRenterPoints(daysRented);
+        return 1;
     }
 }

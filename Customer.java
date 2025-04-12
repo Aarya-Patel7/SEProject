@@ -1,5 +1,5 @@
 /**
- * Author(s): 
+ * Author(s): Lalith Vennapusa and Aarya Patel
  * This program is a refactored version of the original movie-rental program in which
  * the following changes were made:
  * At least 3 method extraction operations
@@ -12,6 +12,7 @@
 import java.util.Enumeration;
 import java.util.Vector;
 
+// Holds detail about Customer such as name and rental, along with funcationality for recieving customer statement
 public class Customer {
     private String name;
     private Vector<Rental> rentals = new Vector<Rental>();
@@ -50,7 +51,7 @@ public class Customer {
             totalRentalFees += rentalAmount;
         }
 
-        customerRentalStatement.append("Amount owed is ").append(totalRentalFees).append("\n");
+        customerRentalStatement.append("Amount owed is $").append(totalRentalFees).append("\n");
         customerRentalStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
 
         return customerRentalStatement.toString();
@@ -81,9 +82,10 @@ public class Customer {
     public static void main(String[] args) {
         Customer customer = new Customer("John Smith");
 
-        customer.addRental(new Rental(new Movie("Independence Day", new NewReleasePrice()), 5));
-        customer.addRental(new Rental(new Movie("Finding Nemo", new ChildrenPrice()), 4));
-        customer.addRental(new Rental(new Movie("The Godfather", new RegularPrice()), 3));
+        // customer rents out different types of movies
+        customer.addRental(new Rental(new NewReleaseMovie("Independence Day"), 5));
+        customer.addRental(new Rental(new ChildrenMovie("Finding Nemo"), 4));
+        customer.addRental(new Rental(new RegularMovie("The Godfather"), 3));
 
         System.out.println("=== Text Statement ===");
         System.out.println(customer.generateTextStatement());

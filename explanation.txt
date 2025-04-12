@@ -1,17 +1,18 @@
 Explanation of Refactored Code for Movie Rental
 A) Method Extraction
 1.	Calc rental price  Extracting this method from the switch statement in the statement method from the original program helps remove the code smell, being the switch statement, from the program, thus improving readability of the program as the method is not as large.
-2.	Calc frequenter points  Extracting this method from the statement method of the original program helps reduce the responsibilities of method and improves readability as the method is not as large (removes a code smell).
+2.	Calc frequenter points  Extracting this method from the statement method of the original program helps reduce the responsibilities of method and improves readability as the calcualtions regarding price and points regarding each movie are calculated in Rental class, helping maintainability and readability. (removes a code smell).
 3.	Output formatting  Extracting this method from the statement method of the original program improves readability as the method is not as large (removes a code smell) and the output can be formatted in a formal structure.
 B) New Classes
-1.	Price.java  Price is a super class to RegularPrice, NewReleasePrice, and ChildrenPrice, which provides the method structure for calculating and returning the rental fee per movie and the amount of renter points given per movie.
-2.	RegularPrice.java  RegularPrice is a sub class to Price and is used to calculate and return the rental fee for a regular movie.
-3.	NewRealeasePrice.java  NewReleasePrice is a sub class to Price and is used to calculate and return the rental fee for a new release movie.
-4.	ChildrenPrice.java   RegularPrice is a sub class to Price and is used to calculate and return the rental fee for a children’s movie.
+1.	Movie.java  Price is a super class to RegularMovie, NewReleaseMovie, and ChildrenMovie, which provides the method structure for calculating and returning the rental fee per movie and the amount of renter points given per movie.
+2.	RegularMovie.java  RegularMovie is a sub class to Movie and is used to calculate and return the rental fee and frequent renter points for a regular movie.
+3.	NewRealeasePrice.java  NewReleaseMovie is a sub class to Movie and is used to calculate and return the rental fee and frequent renter points for a new release movie.
+4.	ChildrenMovie.java   RegularMovie is a sub class to Movie and is used to calculate and return the rental fee and frequent renter points for a children’s movie.
 Creating the following classes helps in the refactoring process by making Customer more readable as it has less responsibilities to perform as a class, improving code organization, and improving the maintainability of program by removing code smells such as large methods and classes.
+Makes code easier to maintain because when adding a new type of movie, all that is need is to create a new sub class of movie
 C) Method Move
 1.	Calc rental price (From Customer to Rental)  Calculating the rental price should be the role of the Rental class not the Customer class, thus the method is moved to the Rental class.
-2.	Calc frequenter points (from Customer to Rental)  Calculating the frequenter renter points should be the role of the Rental class not the Customer class, thus the method is moved to the Rental class.
+2.	Calc frequent renter points (from Customer to Rental)  Calculating the frequenter renter points should be the role of the Rental class not the Customer class, thus the method is moved to the Rental class.
 3.	Get rental price (from Movie to Price classes)
 D) Renaming Operations
 1.  provides a more understandable output method which improves the readability of the program.
