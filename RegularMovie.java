@@ -9,9 +9,9 @@ public class RegularMovie extends Movie {
     public double getCharge(int daysRented) {
         double rentalFee = 2;
         int lateThreshold = 2;
-        double latePenelty = 1.5;
+        double latePenalty = 1.5;
         if (daysRented > lateThreshold) {
-            rentalFee += (daysRented - lateThreshold) * latePenelty;
+            rentalFee += (daysRented - lateThreshold) * latePenalty;
         }
         return rentalFee;
     }
