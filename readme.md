@@ -1,51 +1,31 @@
-# Movie Rental System with Strategy Pattern
+# Movie Rental System with Decorator Pattern
 
-This project is a refactored version of a movie rental application that implements the Strategy Pattern to handle different pricing algorithms and frequent renter points calculations.
+This project is a refactored version of a movie rental application that implements the Decorator Pattern to handle different pricing algorithms and frequent renter points calculations.
 
-## Strategy Pattern Implementation
+## Decorator Pattern Implementation
 
-The Strategy Pattern allows you to define a family of algorithms, encapsulate each one, and make them interchangeable. This implementation includes:
+The Decorator Pattern allows you to add new behaviors to objects by placing them inside wrapper objects that contain these behaviors. This implementation includes:
 
-1. **Strategy Interfaces**:
-   - `PriceStrategy` - Defines the interface for calculating rental charges
-   - `FrequentRenterPointsStrategy` - Defines the interface for calculating frequent renter points
+1. **Base Classes**:
+   - `Movie` - Abstract base class for all movies
+   - `BaseMovie` - Concrete implementation of the base Movie
 
-2. **Concrete Strategies**:
-   - For pricing: `RegularPriceStrategy`, `ChildrenPriceStrategy`, `NewReleasePriceStrategy`
-   - For points: `StandardPointsStrategy`, `NewReleasePointsStrategy`
+2. **Decorator Classes**:
+   - `MovieDecorator` - Abstract base decorator class
+   - `RegularMovieDecorator` - Adds regular movie pricing
+   - `ChildrenMovieDecorator` - Adds children movie pricing
+   - `NewReleaseMovieDecorator` - Adds new release pricing and bonus points logic
+   - `LateFeesDecorator` - Adds late fees calculation for any movie type
+   - `BonusPointsDecorator` - Adds additional frequent renter points
 
-3. **Movie Class**:
-   - Uses composition instead of inheritance by having strategy objects
-   - Delegates pricing and points calculations to the respective strategies
+3. **Model Classes**:
+   - `Rental` - Represents a movie rental
+   - `Customer` - Manages rentals and statement generation
 
-4. **MovieFactory**:
-   - Provides convenience methods for creating common movie types
-   - Each factory method assigns the appropriate strategies
+## Benefits of the Decorator Pattern
 
-## Package Structure
-
-model/
-├── Movie.java
-├── Rental.java
-└── Customer.java
-factory/
-└── MovieFactory.java
-strategy/
-├── price/
-│   ├── PriceStrategy.java
-│   ├── RegularPriceStrategy.java
-│   ├── ChildrenPriceStrategy.java
-│   └── NewReleasePriceStrategy.java
-└── points/
-    ├── FrequentRenterPointsStrategy.java
-    ├── StandardPointsStrategy.java
-    └── NewReleasePointsStrategy.java
-
-
-## Benefits of the Strategy Pattern
-
-1. **Flexibility**: Pricing and points strategies can be changed at runtime
-2. **Extensibility**: New strategies can be added without modifying existing code
-3. **Single Responsibility**: Each strategy class has a single responsibility
+1. **Flexibility**: Behaviors can be added to individual objects dynamically without affecting other objects
+2. **Composability**: Multiple decorators can be stacked to combine behaviors
+3. **Single Responsibility**: Each decorator has a single responsibility
 4. **Open/Closed Principle**: The system is open for extension but closed for modification
-```
+5. **Alternative to Subclassing**: Provides a more flexible way to add functionality than inheritance alone
