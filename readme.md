@@ -8,7 +8,7 @@ The Decorator Pattern allows you to add new behaviors to objects by placing them
 
 1. **Base Classes**:
    - `Movie` - Abstract base class for all movies
-   - `BaseMovie` - Concrete implementation of the base Movie
+   - `BaseMovie` - Concrete implementation of the base Movie 
 
 2. **Decorator Classes**:
    - `MovieDecorator` - Abstract base decorator class
