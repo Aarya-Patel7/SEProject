@@ -1,4 +1,4 @@
-# Movie Rental System with Decorator Pattern
+# Movie Rental System with Decorator Pattern 
 
 This project is a refactored version of a movie rental application that implements the Decorator Pattern to handle different pricing algorithms and frequent renter points calculations.
 
