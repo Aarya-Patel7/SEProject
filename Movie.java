@@ -1,38 +1,28 @@
+package model;
+
 /**
- * Movie class that uses strategy patterns for price and points calculation
+ * Abstract base class for all movies
  */
-public class Movie {
+public abstract class Movie {
     private String title;
-    private PriceStrategy priceStrategy;
-    private FrequentRenterPointsStrategy pointsStrategy;
-
-    public Movie(String title, PriceStrategy priceStrategy, FrequentRenterPointsStrategy pointsStrategy) {
+    
+    public Movie(String title) {
         this.title = title;
-        this.priceStrategy = priceStrategy;
-        this.pointsStrategy = pointsStrategy;
     }
-
+    
     public String getTitle() {
-        return this.title;
+        return title;
     }
-
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public double getCharge(int daysRented) {
-        return priceStrategy.getCharge(daysRented);
-    }
-
+    
+    // Abstract methods to be implemented by concrete movies or decorators
+    public abstract double getCharge(int daysRented);
+    
     public int getFrequentRenterPoints(int daysRented) {
-        return pointsStrategy.getFrequentRenterPoints(daysRented);
-    }
-
-    public void setPriceStrategy(PriceStrategy priceStrategy) {
-        this.priceStrategy = priceStrategy;
-    }
-
-    public void setPointsStrategy(FrequentRenterPointsStrategy pointsStrategy) {
-        this.pointsStrategy = pointsStrategy;
+        // Default implementation returns 1 point
+        return 1;
     }
 }
