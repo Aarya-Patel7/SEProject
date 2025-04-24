@@ -1,3 +1,4 @@
+// Rental Pricing stratergy for children movies
 public class ChildrenPricingStratery extends RentalPricingStratergy{
     public double computeRentalPrice(Rental r) {
         double rentalFee = 1.5;

@@ -1,3 +1,4 @@
+// Pricing stratergy for New Release Movies
 public class NewReleasePricingStratergy extends RentalPricingStratergy{
     public double computeRentalPrice(Rental r) {
         int multiplier = 3;
