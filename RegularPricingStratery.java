@@ -1,4 +1,4 @@
-// Rental pricing stratergy for regular movies
+// Rental pricing strategy for regular movies
 public class RegularPricingStratery extends RentalPricingStratergy{
     public double computeRentalPrice(Rental r) {
         double rentalFee = 2;
