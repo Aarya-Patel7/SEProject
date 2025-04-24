@@ -22,26 +22,6 @@ The Strategy Pattern allows you to define a family of algorithms, encapsulate ea
    - Provides convenience methods for creating common movie types
    - Each factory method assigns the appropriate strategies
 
-## Package Structure
-
-model/
-├── Movie.java
-├── Rental.java
-└── Customer.java
-factory/
-└── MovieFactory.java
-strategy/
-├── price/
-│   ├── PriceStrategy.java
-│   ├── RegularPriceStrategy.java
-│   ├── ChildrenPriceStrategy.java
-│   └── NewReleasePriceStrategy.java
-└── points/
-    ├── FrequentRenterPointsStrategy.java
-    ├── StandardPointsStrategy.java
-    └── NewReleasePointsStrategy.java
-
-
 ## Benefits of the Strategy Pattern
 
 1. **Flexibility**: Pricing and points strategies can be changed at runtime
