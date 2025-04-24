@@ -84,9 +84,9 @@ public class Customer {
         Customer customer = new Customer("John Smith");
 
         // customer rents out different types of movies
-        customer.addRental(new Rental(new NewReleaseMovie("Independence Day"), 5));
-        customer.addRental(new Rental(new ChildrenMovie("Finding Nemo"), 4));
-        customer.addRental(new Rental(new RegularMovie("The Godfather"), 3));
+        customer.addRental(new Rental(new Movie("Independence Day"), new NewReleasePricingStratergy(), new NewReleaseFrequentRentalPoints(), 5));
+        customer.addRental(new Rental(new Movie("Finding Nemo"), new ChildrenPricingStratery(), new ChildrenFrequentRentalPoints(), 4));
+        customer.addRental(new Rental(new Movie("The Godfather"), new RegularPricingStratery(), new RegularFrequentRentalPoints(), 3));
 
         System.out.println("=== Text Statement ===");
         System.out.println(customer.generateTextStatement());

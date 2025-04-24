@@ -1,6 +1,6 @@
 // Parent class Movie
 // Contains Movie specific info and stratergy for calculating charge and frequent renter points
-public abstract class Movie {
+public class Movie {
     private String title;
 
     public Movie (String title) {
@@ -14,8 +14,6 @@ public abstract class Movie {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public abstract double getCharge(int daysRented);
 
     public int getFrequentRenterPoints(int daysRented) {
         return 1;
