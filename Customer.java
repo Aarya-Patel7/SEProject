@@ -8,6 +8,7 @@
  * At least 3 renaming operations
  * 1-2 replacements of data types.
  * The main method provides a means to test the program.
+ * The Strategy Design Pattern was implemented in this updated program for homework 5.
  */
 import java.util.Enumeration;
 import java.util.Vector;
