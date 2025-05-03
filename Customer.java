@@ -15,6 +15,7 @@ public class Customer {
     private String name;
     private double totalRentalFees = 0;
     private int frequentRenterPoints = 0;
+    private static boolean useFreeRental = false;
     private Vector<Rental> rentals = new Vector<Rental>();
     
     public Customer(String name) {
@@ -68,6 +69,9 @@ public class Customer {
         }
         
         customerRentalStatement.append("Amount owed is $").append(totalRentalFees).append("\n");
+        
+        if (frequentRenterPoints >= 10 && useFreeRental)
+            frequentRenterPoints -=10;
         customerRentalStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
         
         return customerRentalStatement.toString();
@@ -80,16 +84,12 @@ public class Customer {
         StringBuilder xml = new StringBuilder();
         xml.append("<customer>\n");
         xml.append("  <name>").append(getName()).append("</name>\n");
-        
-        totalRentalFees = 0;
-        
+           
         Enumeration<Rental> rentalEnum = rentals.elements();
         while (rentalEnum.hasMoreElements()) {
             Rental rental = (Rental) rentalEnum.nextElement();
             double rentalAmount = rental.calculateCharge();
             int frpoints = rental.calculateFrequentRenterPoints();
-            
-            totalRentalFees += rentalAmount;
             
             xml.append("  <rental>\n");
             xml.append("    <movie>").append(rental.getMovie().getTitle()).append("</movie>\n");
@@ -99,6 +99,8 @@ public class Customer {
         }
                 
         xml.append("  <total_fees>").append(totalRentalFees).append("</total_fees>\n");
+        if (frequentRenterPoints >= 10 && useFreeRental)
+            frequentRenterPoints -=10;
         xml.append("  <frequent_renter_points>").append(frequentRenterPoints).append("</frequent_renter_points>\n");
         xml.append("</customer>");
         return xml.toString();
@@ -109,6 +111,9 @@ public class Customer {
         Customer customer = new Customer("John Smith");
         
         // Customer rents different types of movies with decorators
+        Movie theLionKing = new NewReleaseMovieDecorator(new BaseMovie("The Lion King"));
+        Movie aladdin = new NewReleaseMovieDecorator(new BaseMovie("Aladdin"));
+        Movie starWars = new NewReleaseMovieDecorator(new BaseMovie("Star Wars"));
         Movie independenceDay = new NewReleaseMovieDecorator(new BaseMovie("Independence Day (50% coupon)"));
         Movie findingNemo = new LateFeesDecorator(new ChildrenMovieDecorator(new BaseMovie("Finding Nemo")), 3, 1.5);
         Movie godfather = new LateFeesDecorator(new RegularMovieDecorator(new BaseMovie("The Godfather")), 2, 1.5);
@@ -120,6 +125,9 @@ public class Customer {
         Movie expensiveMovie = new LateFeesDecorator(new NewReleaseMovieDecorator(new BaseMovie("Avengers: Endgame")), 2, 5.0);
         Movie discountedExpensiveMovie = new FixedAmountDiscountDecorator(expensiveMovie, 10, 50);
         
+        customer.addRental(new Rental(theLionKing, 2));
+        customer.addRental(new Rental(aladdin, 3));
+        customer.addRental(new Rental(starWars, 4));
         customer.addRental(new Rental(discountedIndependenceDay, 5));
         customer.addRental(new Rental(findingNemo, 4));
         customer.addRental(new Rental(godfather, 3));
@@ -135,17 +143,17 @@ public class Customer {
         FreeRentalService freeRentalService = new FreeRentalService();
         
         // Add some more points to demonstrate free rental
-        customer.frequentRenterPoints = 10; // Set to exactly 10 for demonstration
+        // customer.frequentRenterPoints = 10; // Set to exactly 10 for demonstration
         
         System.out.println("\n=== Free Rental Eligibility ===");
-        System.out.println("Current frequent renter points (set to 10 for demonstration): " + customer.getFrequentRenterPoints());
+        System.out.println("Current frequent renter points: " + customer.getFrequentRenterPoints());
         System.out.println("Eligible for free rental: " + freeRentalService.hasEnoughPointsForFreeRental(customer));
         
         // Apply free rental if eligible
         if (freeRentalService.hasEnoughPointsForFreeRental(customer)) {
             Movie matrixMovie = new RegularMovieDecorator(new BaseMovie("The Matrix"));
             Movie freeMatrix = new FreeRentalDecorator(matrixMovie);
-            
+            useFreeRental = true;
             // Redeem points
             freeRentalService.redeemPointsForFreeRental(customer);
             customer.addRental(new Rental(freeMatrix, 3));
