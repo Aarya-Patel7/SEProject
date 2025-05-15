@@ -16,8 +16,6 @@ public class Customer {
     private double totalTransactionFees = 0;
     private int frequentTransactionPoints = 0;
     private static boolean useFreeTransaction = false;
-    private boolean rentalPrint = false;
-    private boolean purchasePrint = false;
     private Vector<Transaction> transactions = new Vector<Transaction>();
     
     public Customer(String name) {
@@ -64,31 +62,16 @@ public class Customer {
             double transactionAmount = transaction.calculateCharge();
             frequentTransactionPoints += transaction.calculateFrequentTransactionPoints();
             
-            if (transaction.getTransactionType().equals("Rental")) {
-                if (!rentalPrint) {
-                    customerTransactionStatement.append("    Rental Record\n");
-                    rentalPrint = true;
-                }
+            if (transaction.getTransactionType().equals("Rental")) 
+                customerTransactionStatement.append("\t(Rental) ");
 
-                customerTransactionStatement.append("\t").append(transaction.getMovie().getTitle())
+            if (transaction.getTransactionType().equals("Purchase"))
+                    customerTransactionStatement.append("\t(Purchase) ");
+
+            customerTransactionStatement.append(transaction.getMovie().getTitle())
                 .append("\t").append(transactionAmount).append("\n");
             
-                totalTransactionFees += transactionAmount;
-            }
-
-            if (transaction.getTransactionType().equals("Purchase")) {
-                if (!purchasePrint) {
-                    customerTransactionStatement.append("    Purchase Record\n");
-                    purchasePrint = true;
-                }
-                
-                customerTransactionStatement.append("\t").append(transaction.getMovie().getTitle())
-                .append("\t").append(transactionAmount).append("\n");
-        
-                totalTransactionFees += transactionAmount;
-            }
-
-            
+            totalTransactionFees += transactionAmount;
         }
         
         customerTransactionStatement.append("Amount owed is $").append(totalTransactionFees).append("\n");
@@ -97,8 +80,6 @@ public class Customer {
             frequentTransactionPoints -=10;
         customerTransactionStatement.append("You earned ").append(frequentTransactionPoints).append(" frequent transaction points");
         
-        rentalPrint = false;
-        purchasePrint = false;
         return customerTransactionStatement.toString();
     }
     
@@ -115,12 +96,20 @@ public class Customer {
             Transaction transaction = (Transaction) transactionEnum.nextElement();
             double transactionAmount = transaction.calculateCharge();
             int tpoints = transaction.calculateFrequentTransactionPoints();
-            
-            xml.append("  <rental>\n");
-            xml.append("    <movie>").append(transaction.getMovie().getTitle()).append("</movie>\n");
-            xml.append("    <charge>").append(transactionAmount).append("</charge>\n");
-            xml.append("    <points>").append(tpoints).append("</points>\n");
-            xml.append("  </rental>\n");
+            if (transaction.getTransactionType().equals("Rental")) {
+                xml.append("  <rental>\n");
+                xml.append("    <movie>").append(transaction.getMovie().getTitle()).append("</movie>\n");
+                xml.append("    <charge>").append(transactionAmount).append("</charge>\n");
+                xml.append("    <points>").append(tpoints).append("</points>\n");
+                xml.append("  </rental>\n");
+            }
+            if (transaction.getTransactionType().equals("Purchase")) {
+                xml.append("  <purchase>\n");
+                xml.append("    <movie>").append(transaction.getMovie().getTitle()).append("</movie>\n");
+                xml.append("    <charge>").append(transactionAmount).append("</charge>\n");
+                xml.append("    <points>").append(tpoints).append("</points>\n");
+                xml.append("  </purchase>\n");
+            }
         }
                 
         xml.append("  <total_fees>").append(totalTransactionFees).append("</total_fees>\n");
@@ -150,7 +139,7 @@ public class Customer {
         Movie discountedExpensiveMovie = new FixedAmountDiscountDecorator(expensiveMovie, 10, 50);
 
         //Purchase two movies
-        Movie theLionKing = new PremiumPurchaseDecorator(new PurchasePriceDecorator(new BaseMovie("The Lion King"), 20), 5);
+        Movie theLionKing = new PremiumPurchaseDecorator(new PurchasePriceDecorator(new ChildrenMovieDecorator (new BaseMovie("The Lion King")), 20), 5);
         Movie aladdin = new PurchaseDiscountDecorator(new PurchasePriceDecorator(new BaseMovie("Aladdin"), 15), 15);
         
         customer.addTransaction(new Rental(starWars, 4));
