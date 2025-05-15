@@ -10,24 +10,23 @@
  * The main method provides a means to test the program.
  * The Strategy Design Pattern was implemented in this updated program for homework 5.
  */
-import java.util.Enumeration;
 import java.util.Vector;
+
+import javax.swing.tree.TreeNode;
 
 // Holds detail about Customer such as name and rental, along with funcationality for recieving customer statement
 public class Customer {
     private String name;
-    private Vector<Rental> rentals = new Vector<Rental>();
-    private double totalRentalFees = 0;
-    private int frequentRenterPoints = 0;
+    private Vector<DiscountedTransaction> transactions = new Vector<DiscountedTransaction>();
+    int totalRentalPoints = 0;
 
     public Customer(String name) {
         this.name = name;
     }
 
-    public void addRental(Rental rental) {
-        rentals.addElement(rental);
+    public void addTransaction(DiscountedTransaction dt) {
+        transactions.addElement(dt);
     }
-
     public String getName() {
         return name;
     }
@@ -37,24 +36,29 @@ public class Customer {
      * of the customer.
      */
     public String generateTextStatement() {
-        StringBuilder customerRentalStatement = new StringBuilder("Rental Record for " + getName() + "\n");
+        int totalRentalPoints = 0;
+        double totalLifeTimeCost = 0;
 
-        Enumeration<Rental> rentalEnum = rentals.elements();
-        while (rentalEnum.hasMoreElements()) {
-            Rental rental = (Rental) rentalEnum.nextElement();
-            double rentalAmount = rental.calculateCharge();
-            frequentRenterPoints += rental.calculateFrequentRenterPoints();
+        StringBuilder customerStatement = new StringBuilder("Transaction Record for " + getName() + "\n");
 
-            customerRentalStatement.append("\t").append(rental.getMovie().getTitle())
-                  .append("\t").append(rentalAmount).append("\n");
+        for (int i = 0; i < transactions.size(); i++) {
+            customerStatement.append("===============\n");
+            customerStatement.append(String.valueOf(i+1) + ")\n");
+            DiscountedTransaction t = transactions.get(i);
+            double amountDue = t.getAmountDue();
+            int rewardPoints = t.getRewardPoints();
+            customerStatement.append("Amount for this transation: $" + String.valueOf(amountDue) + "\n");
+            customerStatement.append("Reward points earned for this transaction: " + String.valueOf(rewardPoints) + "\n");
+            totalLifeTimeCost += amountDue;
+            totalRentalPoints += rewardPoints;
+        } 
+        customerStatement.append("\n=========================\n");
+        customerStatement.append("Lifetime transtions price: $" + String.valueOf(totalLifeTimeCost) + "\n");
+        customerStatement.append("Total reward points in account: " + String.valueOf(totalRentalPoints) + "\n\n");
 
-            totalRentalFees += rentalAmount;
-        }
+        this.totalRentalPoints = totalRentalPoints;
 
-        customerRentalStatement.append("Amount owed is $").append(totalRentalFees).append("\n");
-        customerRentalStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-
-        return customerRentalStatement.toString();
+        return customerStatement.toString();
     }
 
     /* Generates a statement of Customer name, movie, and rental price for
@@ -62,21 +66,9 @@ public class Customer {
      */
     public String generateXmlStatement() {
         StringBuilder xml = new StringBuilder();
-        xml.append("<customer>\n");
-        xml.append("  <name>").append(getName()).append("</name>\n");
 
-        Enumeration<Rental> rentalEnum = rentals.elements();
-        while (rentalEnum.hasMoreElements()) {
-            Rental rental = (Rental) rentalEnum.nextElement();
-            xml.append("  <rental>\n");
-            xml.append("    <movie>").append(rental.getMovie().getTitle()).append("</movie>\n");
-            xml.append("    <charge>").append(rental.calculateCharge()).append("</charge>\n");
-            xml.append("  </rental>\n");
-        }
+        xml.append("Print in xml format but because the assignment does not ask for it, implementaiton is not provided.");
 
-        xml.append("  <total fees>").append(totalRentalFees).append("</total fees>\n");
-        xml.append("  <frequenter renter points>").append(frequentRenterPoints).append("</frequenter renter points>\n");
-        xml.append("</customer>");
         return xml.toString();
     }
 
@@ -84,10 +76,29 @@ public class Customer {
     public static void main(String[] args) {
         Customer customer = new Customer("John Smith");
 
-        // customer rents out different types of movies
-        customer.addRental(new Rental(new Movie("Independence Day"), new NewReleasePricingStratergy(), new NewReleaseFrequentRentalPoints(), 5));
-        customer.addRental(new Rental(new Movie("Finding Nemo"), new ChildrenPricingStratery(), new ChildrenFrequentRentalPoints(), 4));
-        customer.addRental(new Rental(new Movie("The Godfather"), new RegularPricingStratery(), new RegularFrequentRentalPoints(), 3));
+        Vector<Rental> rentals = new Vector<Rental>();
+        rentals.add(new Rental(new Movie("Jurassic Park"), new RegularPricingStratery(), new RegularFrequentRentalPoints(), 7));
+        rentals.add(new Rental(new Movie("Madagascar"), new ChildrenPricingStratery(), new ChildrenFrequentRentalPoints(), 4));
+        rentals.add(new Rental(new Movie("Mission Impossible"), new NewReleasePricingStratergy(), new NewReleaseFrequentRentalPoints(), 3));
+
+
+        Vector<Purchase> purchases = new Vector<Purchase>();
+        purchases.add(new Purchase(new Movie("Kung Fu Panda"), new PurchaseChildrenStratergy(), new PromotedPurchasePoints()));
+        purchases.add(new Purchase(new Movie("Shawshank Redemption"), new PurchaseRegularStratergy(), new RegularPurchasePoints()));
+        purchases.add(new Purchase(new Movie("Se7en"), new PurchaseNewReleaseStratergy(), new PromotedPurchasePoints()));
+
+        // customer does transactions
+        customer.addTransaction(new Transaction(rentals, purchases));
+        customer.addTransaction(new Coupon50Off(new Transaction(rentals, purchases)));
+        customer.addTransaction(new CouponDoubleReward(new Coupon50Off(new Transaction(rentals, purchases))));
+
+        rentals.remove(2);
+        rentals.add(new Rental(new Movie("Godzilla"), new RegularPricingStratery(), new RegularFrequentRentalPoints(), 5));
+        purchases.remove(2);
+        purchases.add(new Purchase(new Movie("Athadu"), new PurchaseNewReleaseStratergy(), new PromotedPurchasePoints()));
+
+        customer.addTransaction(new Transaction(rentals, purchases));
+        customer.addTransaction(new Coupon10Off(new Transaction(rentals, purchases)));
 
         System.out.println("=== Text Statement ===");
         System.out.println(customer.generateTextStatement());

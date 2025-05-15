@@ -1,5 +1,4 @@
-public class Rental {
-    private Movie movie;
+public class Rental extends Item {
     private int daysRented;
     private RentalPricingStratergy pricingStratergy;
     private FrequentRentalStratergy frequentRentalStratergy;
@@ -15,15 +14,13 @@ public class Rental {
         return daysRented;
     }
 
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public double calculateCharge() {
+    @Override
+    public double getPrice() {
         return pricingStratergy.computeRentalPrice(this);
     }
 
-    public int calculateFrequentRenterPoints() {
+    @Override
+    public int getRewardPoints() {
         return frequentRentalStratergy.getFrequentRenterPoints(this);
     }
 }
